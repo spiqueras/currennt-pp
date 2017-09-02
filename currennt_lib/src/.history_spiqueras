@@ -1,0 +1,44 @@
+2016-03-26.11-23-34.spiqueras-MS-7918 ls
+2016-03-26.11-23-45.spiqueras-MS-7918 rm~
+2016-03-26.11-23-46.spiqueras-MS-7918 ls
+2016-03-26.11-24-04.spiqueras-MS-7918 gedit data_sets/DataSet.cpp 
+2016-03-26.11-24-09.spiqueras-MS-7918 gedit data_sets/DataSet.hpp 
+2016-03-26.11-30-31.spiqueras-MS-7918 gedit data_sets/DataSetFraction.*
+2016-03-26.11-31-10.spiqueras-MS-7918 gedit layers/MultiLayer.*
+2016-03-26.11-33-37.spiqueras-MS-7918 gedit layers/Layer.hpp
+2016-03-26.11-33-45.spiqueras-MS-7918 gedit layers/Layer.cpp
+2016-03-26.11-41-42.spiqueras-MS-7918 gedit netcdf/netcdf.h 
+2016-03-26.12-03-39.spiqueras-MS-7918 gedit netcdf/netcdf.h 
+2016-03-26.12-03-39.spiqueras-MS-7918 gedit netcdf/netcdf.h 
+2016-03-26.12-03-39.spiqueras-MS-7918 gedit netcdf/netcdf.h 
+2016-03-26.12-03-39.spiqueras-MS-7918 gedit netcdf/netcdf.h 
+2016-03-26.12-03-40.spiqueras-MS-7918 ls
+2016-03-26.12-03-53.spiqueras-MS-7918 gedit ~/.bashrc &
+2016-03-26.12-27-57.spiqueras-MS-7918 gedit layers/TrainableLayer.*
+2016-03-26.12-30-20.spiqueras-MS-7918 gedit NeuralNetwork.cpp 
+2016-03-26.18-04-29.spiqueras-MS-7918 gedit layers/FeedForwardLayer.cu 
+2016-03-26.20-08-11.spiqueras-MS-7918 gedit optimizers/*
+2016-03-26.20-19-00.spiqueras-MS-7918 gedit NeuralNetwork.hpp 
+2016-03-27.10-38-39.spiqueras-MS-7918 gedit layers/PostOutputLayer.cpp 
+2016-03-27.10-38-50.spiqueras-MS-7918 gedit layers/PostOutputLayer.hpp 
+2016-03-27.10-57-35.spiqueras-MS-7918 gedit layers/PostOutputLayer.hpp 
+2016-03-27.10-57-39.spiqueras-MS-7918 gedit optimizers/*
+2016-03-27.11-18-30.spiqueras-MS-7918 gedit layers/FeedForwardLayer.hpp 
+2016-03-27.11-19-38.spiqueras-MS-7918 gedit layers/SsePostOutputLayer.cu 
+2016-03-27.11-22-48.spiqueras-MS-7918 grep actualOut *
+2016-03-27.11-22-50.spiqueras-MS-7918 grep actualOut */*
+2016-03-27.18-26-21.spiqueras-MS-7918 grep _outputs */*
+2016-03-27.19-15-01.spiqueras-MS-7918 grep _outputs */*
+2016-03-27.19-15-08.spiqueras-MS-7918 gedit optimizers/SteepestDescentOptimizer.cu 
+2016-03-27.19-51-41.spiqueras-MS-7918 gedit layers/AbsPostOutputLayer.cu 
+2016-03-27.20-18-00.spiqueras-MS-7918 gedit ../../currennt/src/main.cpp 
+2016-03-28.11-40-36.spiqueras-MS-7918 ssh spiqueras@capra.dsic.upv.es
+2016-03-28.12-47-21.spiqueras-MS-7918 ssh spiqueras@capra.dsic.upv.es
+2016-03-28.17-51-45.spiqueras-MS-7918 nvidia-settings 
+2016-03-28.17-51-46.spiqueras-MS-7918 ls
+2016-03-28.17-54-23.spiqueras-MS-7918 play -r 48000 -b 16 -e signed-integer ~/Downloads/upc_ca_jan_200001.raw 
+2016-03-28.17-54-27.spiqueras-MS-7918 play -r 48000 -b 16 -e signed-integer ~/Downloads/upc_ca_jan_200001.raw 
+2016-03-28.17-56-49.spiqueras-MS-7918 play -r 48000 -b 16 -e signed-integer ~/Downloads/upc_ca_jan_200001.raw 
+2016-03-28.17-56-53.spiqueras-MS-7918 play -r 48000 -b 16 -e signed-integer ~/Downloads/upc_ca_jan_200001.raw 
+2016-03-28.18-36-00.spiqueras-MS-7918 play -r 48000 -b 16 -e signed-integer ~/Downloads/upc_ca_jan_200001.raw 
+2016-03-28.19-19-20.spiqueras-MS-7918 play -r 48000 -b 16 -e signed-integer ~/Downloads/upc_ca_jan_200001.raw 
