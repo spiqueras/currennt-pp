@@ -1,3 +1,215 @@
+CURRENNT-PP is a modified version of CURRENNT v0.2RC1. It features some new
+layer types, optimizers, activation functions, and general options. Testing
+has not been exhaustive, so some bugs are to be expected.
+
+Below the new options are described. After that, the original CURRENNT README
+can be found.
+
+CURRENNT-PP was developed by Santiago Piqueras as a member of the
+Machine Learning and Language Processing group, Universitat Politècnica
+de València. It is distributed under the 3.0 GPL license.
+
++=============================================================================+
+| Structure                                                                   |
++=============================================================================+
+1. Building on Linux
+2. Building on Windows
+3. New options
+4. Other considerations & Known bugs
+
++=============================================================================+
+| 1. Building on Linux                                                        |
++=============================================================================+
+
+Unlike CURRENNT, CURRENNT-PP requires CUDA 7.0. NetCDF, GCC and Boost >=1.48
+are still required.
+
+To build CURRENNT-PP, execute the following commands:
+#> cd currennt
+#> mkdir build && cd build
+#> cmake ..
+#> make
+
+This will create and executable "currennt-pp" in the /build folder.
+
++=============================================================================+
+| 2. Building on Windows                                                      |
++=============================================================================+
+
+Building on Windows has not been tested and, as such, it is highly discouraged.
+Given that the .sln file has not been updated, chances are it won't work.
+There are currently no plans to bundle a windows solution with CURRENNT-PP.
+However, any pull requests in this direction will be accepted and merged.
+
+
++=============================================================================+
+| 3. New options                                                              |
++=============================================================================+
+
+* General options *
+
+--use_cache <true/false>
+  By default, CURRENNT creates a cache file with the training/dev/test data. 
+  This behavior can be overridden setting --use_cache to false. This option
+  means that CURRENNT-PP will hold all the data in RAM, so make sure that you
+  have enough memory before setting it to true.
+
+
+* Optimizer-related options *
+
+--nesterov_momentum <true/false>
+  Nesterov Accelerated Gradient is a modification of gradient descent that
+  usually results in faster convergence. It can be used with SGE, Adam or
+  AdaMAX optimizers. Given that it comes with no extra cost, I'd recommend
+  setting it to true.
+
+--optimizer adam, --optimizer adamax
+  Two "new" optimizers, which have been recently shown to outperform SGD in
+  a variety of tasks. For more information, you should check:
+  * Adam: A Method for Stochastic Optimization, https://arxiv.org/abs/1412.6980
+
+--adam_beta1 arg (=0.9)
+--adam_beta2 arg (=0.999)
+--adam_epsilon arg (=1e-8)
+  These are Adam and AdaMAX metaparameters. You should not modify them unless
+  you know what you are doing. For more info, refer to the article above.
+
+--epochs_no_best_lr arg (=0)          number of epochs without improvement in
+                                      order to update learning rate
+--lr_decay_rate arg (=1)              sets the decay rate for learning rate 
+                                      update (usually ]0,1])
+--min_learning_rate arg (=1e-7)       sets the minimum learning rate
+  I'm unsure if these options work, but they have fairly descriptive names, so
+  use them at your own risk.
+
+
+* New layers *
+
+** Activation functions:
+  * relu: Rectified linear unit.
+  Actual implementation is:
+    x<0    -> 0
+    0<x<20 -> x
+    20<x   -> 20
+  Can be used with feed forward and rnn layers.
+
+** Layers:
+  * rnn, brnn: Uni- and bidirectional recurrent layers.
+  Require an activation function. Available combinations:
+  rnn_identity
+  rnn_logistic
+  rnn_tanh
+  rnn_relu
+  brnn_identity
+  brnn_logistic
+  brnn_tanh
+  brnn_relu
+  
+** Postlayers:
+
+  * abs: Absolute error.
+  To be used with any output layer.
+
+  * rmse: Root mean squared error.
+  To be used with any output layer. This already existed in CURRENNT, but now
+  it has been fixed to actually work.
+
+** Multi layer:
+
+  Multilayers are a mechanism to create networks where some of the layers are
+  shared between all subtypes and some of them are specific to a given subtype.
+
+  By default, all inputs share and contribute to the whole network. There are
+  two steps needed to create a network with shared and input-dependent layers:
+
+  - First, input NetCDF files need to be modified to include subtype label:
+  
+  """
+  {
+    dimensions:
+    [...]
+            maxSeqTypeLength = 10 ;
+    variables:
+    [...]
+            char seqTypes(numSeqs, maxSeqTypeLength) ;
+                    seqTypes:longname = "sequence types" ;
+    [...]
+    data:
+
+     seqTypes =
+      "type1",
+      "type1",
+      "type2",
+      "type2",
+      [...]
+      "type3",
+      "type3",
+      "type2" ;
+
+    [...]
+  }
+  """
+  
+  - Second, subtype-specific layers need to include the word "multi" and ALL
+  possible subtypes.
+
+  "
+    {
+      "size": 43,
+      "name": "ff",
+      "bias": 1.0,
+      "type": "feedforward_logistic",
+      "multi": "type1,type2,type3"
+    }
+  "
+
+  Some considerations:
+  - All layers that have weights can be subtype-specific. This includes output
+  layers, and excludes input layer.
+  - Layers which do not have the multi keyword will be shared between all
+  inputs.
+  - Adam and AdaMAX optimizers have been modified to account for
+  subtype-specific layers.
+  - Sequences can only belong to a single subtype.
+  - Subtype-specific layers have the same number of parameters as shared layers
+  times the number of subtypes.
+
+--ff_subtype <string>:
+  This option overrides the subtype of all inputs to the given subtype. It can
+  be used to simulate different subtypes for a given input sequence without
+  having to redo the NetCDF file.
+
++=============================================================================+
+| 4. Other considerations & Known bugs                                        |
++=============================================================================+
+
+--weights_dist <uniform/normal>
+--weights_uniform_min <value>
+--weights_uniform_max <value>
+--weights_normal_sigma <value>
+--weights_normal_mean <value>
+  As in CURRENNT, these options can be used globally to fine-tune weights
+  initialization. However, in CURRENNT-PP they can also be specified inside
+  each layer to override global settings for that layer.
+
+https://sourceforge.net/p/currennt/discussion/general/thread/944f2cf2/
+  There is a bug in CURRENNT when the total number of train sequences is not
+  divisible by the number of sequences in a batch and shuffling is enabled.
+  This is no longer a problem in CURRENNT-PP.
+
+Known bugs:
+  Multilayers do not interact well with other CURRENNT-PP features.
+  Specifically, it is known that:
+  * --save-network will not save the best network. --autosave-best does.
+  * The number of network weights that CURRENNT-PP reports is incorrect.
+
+
+*-----------------------------------------------------------------------------*
+
+*******************************************************************************
+* ORIGINAL CURRENNT README                                                    *
+*******************************************************************************
+
 CURRENNT is written in C++/CUDA and runs on Windows and Linux. It requires a
 CUDA-capable graphics card with a compute capability of 1.3 or higher (i.e. at
 least a GeForce 210, GT 220/40, FX380 LP, 1800M, 370/380M or NVS 2/3100M)
